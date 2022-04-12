@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>
+            {% block title %}
+                
+            {% endblock %}
+        </title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        {# Feuilles de styles #}
+        <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
+        {% block stylesheets %}{% endblock %}
+        <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}" />
+
+        {# Fichier JS #}
+        <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" defer></script>
+        {% block javascripts %}{% endblock %}
+        <script src="{{ asset('assets/js/script.js') }}" defer></script>
+
+    </head>
+    <body>
+
+        {% include '_partials/_nav.html.twig' %}
+
+        {% block body %}{% endblock %}
+
+        {% include '_partials/_footer.html.twig' %}
+
+       
+
+    </body>
+</html>
