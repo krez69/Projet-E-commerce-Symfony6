@@ -1,17 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}E-commerce{% endblock %}
+{% block title %}E-commerce
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example">
-    <h1>HELLO LA FAMAX !</h1>
-        <p>Bienvenue sur le site</p>
-
-   
-</div>
+	<main class="container">
+		<section class="row">
+			<div class="col-12">
+				<h1>HELLO LA FAMAAX !</h1>
+				<p>Bienvenue sur le site</p>
+            </div>	        
+				{% for category in categories %}
+					{% if category.parent == null %}
+						<div class="col-12 mt-3">
+							<h2>{{category.name}}</h2>
+						</div> 
+                    {% else %}
+                        <div class="col-3 mb-4">
+                            <div class="card h-100 mt-4">
+                                <div class="card-body">
+                                    <h3 class="card-title">{{category.name}}</h3>
+                                    {# recupère le slug de l'entité #}
+                                    <a href="{{path('categories_list', {slug: category.slug})}}" class="btn btn-primary">Voir les produits</a>
+                                </div>
+                            </div>                                    
+                        </div>						
+			
+                    {% endif %} 
+                {% endfor %}            
+		</section>
+	</main>
 {% endblock %}
