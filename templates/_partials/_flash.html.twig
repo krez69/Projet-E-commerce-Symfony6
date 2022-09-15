@@ -1,0 +1,12 @@
+{# app.flashes recupère les messages depuis un controller #}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+    {# {{label}} va permettre de choisir la couleur du message #}
+    <div class="alert alert-{{label}} alert-dismissible" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert-message">
+            {{message|raw}} 
+        </div>           
+    </div>        
+    {% endfor %}    
+{% endfor %}
