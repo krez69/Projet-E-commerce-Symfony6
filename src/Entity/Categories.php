@@ -2,14 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoriesRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Products;
+use App\Entity\Trait\SlugTrait;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CategoriesRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: CategoriesRepository::class)]
 class Categories
 {
+    use SlugTrait;
+     
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -18,7 +22,11 @@ class Categories
     #[ORM\Column(type: 'string', length: 100)]
     private $name;
 
+    #[ORM\Column(type: 'integer')]
+    private $categoryOrder;
+
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'categories')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private $parent;
 
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
@@ -47,6 +55,18 @@ class Categories
     {
         $this->name = $name;
 
+        return $this;
+    }
+
+    public function getCategoryOrder(): ?int
+    {
+        return $this->categoryOrder;
+    }
+
+    public function setCategoryOrder(int $categoryOrder): self
+    {
+        $this->categoryOrder = $categoryOrder;
+        
         return $this;
     }
 

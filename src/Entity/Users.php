@@ -2,18 +2,21 @@
 
 namespace App\Entity;
 
-use App\Repository\UsersRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UsersRepository;
+use App\Entity\Trait\CreatedAtTrait;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use CreatedAtTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -42,10 +45,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 150)]
     private $city;
-
-    #[ORM\Column(type: 'datetime_immutable', options:['default' => 'CURRENT_TIMESTAMP'])]
-    private $created_at;
-
+  
     #[ORM\OneToMany(mappedBy: 'users', targetEntity: Orders::class)]
     private $orders;
 
@@ -184,19 +184,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->created_at;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
-    {
-        $this->created_at = $created_at;
-
-        return $this;
-    }
-
+   
     /**
      * @return Collection<int, Orders>
      */
