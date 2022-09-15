@@ -6,14 +6,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/profile', name: 'app_profile')]
+#[Route('/profile', name: 'profile_')]
 class ProfileController extends AbstractController
 {
     #[Route('/', name: 'index')]
     public function index(): Response
     {
         return $this->render('profile/index.html.twig', [
-            'controller_name' => 'ProfileController',
+            'controller_name' => 'Profile de l\'utilisateur',
         ]);
     }
 
@@ -21,7 +21,7 @@ class ProfileController extends AbstractController
     public function orders(): Response
     {
         return $this->render('profile/index.html.twig', [
-            'controller_name' => 'OrdersController',
+            'controller_name' => 'Commandes de l\'utilisateur',
         ]);
     }
 
