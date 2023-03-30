@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accès refusé{% endblock %}
+
+{% block body %}
+	<div class="container" class="error">
+		<h1 class="h1-error">Accès refusé</h1>
+		<p>Oops! Vous n'êtes pas autorisé à accéder à cette page.</p>
+		<a class="a-error" href="{{ path('main') }}">Retourner à la page d'accueil</a>
+	</div>
+{% endblock %}
+

@@ -1,0 +1,41 @@
+/*Début du style page error 403 404*/
+
+/* body {
+    background-color: #f6f6f6;
+    font-family: Arial, sans-serif;
+  } */
+  .error {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 50px 20px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+  }
+  .h1-error {
+    font-size: 48px;
+    color: #ff6b61;
+    margin-bottom: 20px;
+  }
+  p {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 30px;
+  }
+  .a-error {
+    display: inline-block;
+    padding: 10px 30px;
+    background-color: #ff6f61;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 18px;
+    transition: background-color 0.2s ease;
+    margin-bottom: 30px;
+  }
+  .a-error:hover{
+    background-color: #e65c4f;
+    
+  }
+  /*Fin du style error*/
