@@ -7,7 +7,7 @@
 	<main class="container">
 		<section class="row">
 			<div class="col-12">
-				<h1>HELLO LA FAMAAX !</h1>
+				<h1>HELLO !</h1>
 				<p>Bienvenue sur le site</p>
             </div>	        
 				{% for category in categories %}
@@ -24,8 +24,7 @@
                                     <a href="{{path('categories_list', {slug: category.slug})}}" class="btn btn-primary">Voir les produits</a>
                                 </div>
                             </div>                                    
-                        </div>						
-			
+                        </div>		
                     {% endif %} 
                 {% endfor %}            
 		</section>
