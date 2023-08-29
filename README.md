@@ -5,6 +5,8 @@ Environnement LAMP
 
 Base de donnée : MySQL
 
+![BDD diagramme](https://github.com/krez69/Projet-E-commerce-Symfony6/assets/54604993/17255b15-7cc7-47e2-a784-d31710f393de)
+
 Frameworks : Symfony 6
 
 Stacks : 
