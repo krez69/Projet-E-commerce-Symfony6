@@ -12,7 +12,8 @@
             {% for image in product.images %}
             <div>
                 <img src="{{ asset('assets/uploads/products/mini/300x300-' ~ image.name )}}" alt="Image" width="150"/>
-                <a href="{{ path('admin_products_delete_image', {id: image.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ image.id) }}">Supprimer</a>
+                <a href="{{ path('admin_products_delete_image', {id: image.id}) }}" 
+                data-delete data-token="{{ csrf_token('delete' ~ image.id) }}">Supprimer</a>
             </div>                
             {% endfor %}        
     {% endif %}
