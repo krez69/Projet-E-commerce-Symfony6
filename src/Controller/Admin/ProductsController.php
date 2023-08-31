@@ -5,7 +5,9 @@ namespace App\Controller\Admin;
 use App\Entity\Images;
 use App\Entity\Products;
 use App\Form\ProductsFormType;
+use App\Repository\ProductsRepository;
 use App\Service\PictureService;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,11 +21,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ProductsController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(): Response
+    public function index(ProductsRepository $productsRepository): Response
     {
-        return $this->render('admin/products/index.html.twig', [
-            'controller_name' => 'AdminController',
-        ]);
+        $produits = $productsRepository->findAll();
+
+        return $this->render('admin/products/index.html.twig', compact('produits')
+        );
     }
 
     #[Route('/ajout', name: 'add')]
@@ -45,39 +48,39 @@ class ProductsController extends AbstractController
             //On récupère les images
             $images = $productForm->get('images')->getData();
 
-            foreach($images as $image){
-                //On définit le dossier de destination
-                $folder = 'products';
+            if (!empty($images)) {
+                foreach ($images as $image) {
+                    //On définit le dossier de destination
+                    $folder = 'products';
 
-                //On appelle le service d'ajout
-                $fichier = $pictureService->add($image, $folder, 300, 300);
+                    //On appelle le service d'ajout
+                    $fichier = $pictureService->add($image, $folder, 300, 300);
 
-                $img = new Images();
-                $img->setName($fichier);
+                    $img = new Images();
+                    $img->setName($fichier);
 
-                //On persist l'image dans le produit
-                $product->addImage($img);
-            }
-            //On génère le slug
-            $slug = $slugger->slug($product->getName());
-            $product->setSlug($slug);
+                    //On persist l'image dans le produit
+                    $product->addImage($img);
+                }
+                //On génère le slug
+                $slug = $slugger->slug($product->getName());
+                $product->setSlug($slug);                
 
-            //On arrondi le prix
-            // $prix = $product->getPrice() * 100;
-            // $product->setPrice($prix);
+                //On stock
+                $em->persist($product);
+                $em->flush();
 
-            //On stock
-            $em->persist($product);
-            $em->flush();
+                $this->addFlash('success', 'Produit ajouté avec succès');
 
-            $this->addFlash('success', 'Produit ajouté avec succès');
-
-            //On redirige
-            return $this->redirectToRoute('admin_products_index');         
-
+                //On redirige
+                return $this->redirectToRoute('admin_products_index');
+            } else {
+                $this->addFlash('danger', "Le produit n'a pas d'image");
+            }     
         } 
         
         return $this->renderForm('admin/products/add.html.twig', compact('productForm'));
+
     }
     #[Route('/edition/{id}', name: 'edit')]
     public function edit(Products $product, Request $request, EntityManagerInterface $em, SluggerInterface $slugger, PictureService $pictureService): Response
@@ -138,13 +141,23 @@ class ProductsController extends AbstractController
         ]);        
     }
 
-    #[Route('/suppression/{id}', name: 'delete')]
-    public function delete(Products $product): Response
+    #[Route('/suppression/{id}', name: 'delete', methods: ['GET', 'DELETE'])]
+    public function delete(Products $product, $id, ProductsRepository $productsRepository, EntityManagerInterface $em ): Response
     {
         //On verife si l'utilisateur peut supprimé avec le Voter
         $this->denyAccessUnlessGranted('PRODUCT_DELETE', $product);
+        
+        $produits = $productsRepository->find($id);     
+        $em->remove($produits);
+        $em->flush();
 
-        return $this->render('admin/products/index.html.twig');
+        $this->addFlash('success', 'Produit supprimé avec succès');
+
+            //On redirige
+            return $this->redirectToRoute('admin_products_index'); 
+
+
+        return $this->render('admin/products/index.html.twig', compact('produits'));
     }
 
     #[Route('/suppression/image/{id}', name: 'delete_image', methods: ['DELETE'])]

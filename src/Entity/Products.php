@@ -47,6 +47,7 @@ class Products
     private $categories;
 
     #[ORM\OneToMany(mappedBy: 'products', targetEntity: Images::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\NotBlank(message: "L'image du produit est obligatoire.")]
     private $images;
 
     #[ORM\OneToMany(mappedBy: 'products', targetEntity: OrdersDetails::class)]
